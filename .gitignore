@@ -1,1 +1,2 @@
 *.csv
+!df_fin.csv
