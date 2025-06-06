@@ -7,7 +7,7 @@ import re
 def load_data():
     return pd.read_csv("df_descriptif.csv")
 
-df_sans_vec = load_data()
+reco_film = load_data()
 
 def accueil():
     st.header(" 🎬 CINE PROJECT")
