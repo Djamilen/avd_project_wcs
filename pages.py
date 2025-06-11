@@ -11,9 +11,9 @@ df_sans_vec = load_data()
 
 def accueil():
     st.header(" 🎬 CINE PROJECT")
-    # st.write(df_sans_vec["originalTitle"].head(20))
-    # st.write(df_sans_vec.columns)
-    # st.write(df_sans_vec["averageRating"])
+    # st.write(df_descriptif["originalTitle"].head(20))
+    # st.write(df_descriptif.columns)
+    # st.write(df_descriptif["averageRating"])
     st.markdown(
         """
         Bienvenue sur <strong>CINE PROJECT</strong>, votre destination pour découvrir et explorer l'univers du cinéma.  
@@ -92,6 +92,7 @@ def accueil():
             unsafe_allow_html=True
         )
 
+
 def recherche():
     # Chargement des données
     @st.cache_data
@@ -105,31 +106,12 @@ def recherche():
 
 
 
-    # @st.cache_data
-    # def load_data():
-    #     df = pd.read_csv("df_sans_vec.csv")
-    #     df.columns = df.columns.str.strip()
-    #     df = df[df['url_complet'].notna()]
-    #     df = df[df['url_complet'].str.strip() != ""]
-    #     df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
-    #     df['startYear'] = df['startYear'].astype(int)
-    #     df = df.sort_values(by="startYear", ascending=False)
-    #     return df
         
     df = load_data()
     st.header(" 🎬 CINE PROJECT")
     st.title("🔎 Recherche de films")
 
-    if "filtre_actif" not in st.session_state:
-        st.session_state.filtre_actif = None
-    if "titre_input" not in st.session_state:
-        st.session_state.titre_input = ""
-    if "genre_input" not in st.session_state:
-        st.session_state.genre_input = ""
-    if "nom" not in st.session_state:
-        st.session_state.nom = ""
-    if "page_num" not in st.session_state:
-        st.session_state.page_num = 0
+
 
     # Bouton de réinitialisation
     if st.button("Réinitialiser les filtres"):
@@ -202,7 +184,11 @@ def recherche():
                     st.markdown(f"**{row['originalTitle']}**")
                     st.write(f"Année : {row['startYear']}")
                     st.write(f"Genres : {row['genres']}")
-
+                    selected = st.button("Accéder à la reco", key=row["originalTitle"])
+                    if selected:
+                        st.session_state["film_selectionne"] = row["originalTitle"]
+                        st.session_state["page"] = "Reco"
+                        st.rerun()
         # Navigation
         st.markdown(f"Page {page_num + 1} sur {total_pages}")
         col_prev, col_next = st.columns([1, 1])
@@ -323,3 +309,26 @@ def espace_découverte():
                 st.markdown(f"**{row['originalTitle']}**")
                 st.write(f"{row['noms']}")
                 st.write(f"Année : {row['startYear']}")
+
+
+def session_states():
+    if "filtre_actif" not in st.session_state:
+        st.session_state.filtre_actif = None
+    if "titre_input" not in st.session_state:
+        st.session_state.titre_input = ""
+    if "genre_input" not in st.session_state:
+        st.session_state.genre_input = ""
+    if "nom" not in st.session_state:
+        st.session_state.nom = ""
+    if "page_num" not in st.session_state:
+        st.session_state.page_num = 0
+    if "page" not in st.session_state:
+        st.session_state.page = "Accueil"
+        
+def reco():
+    if st.session_state["film_selectionne"] not in st.session_state or st.session_state["film_selectionne"] is None:
+        st.write("Rien a voir")
+    else:
+        st.write(f"Film sélectionné : {st.session_state["film_selectionne"]}")
+
+        
