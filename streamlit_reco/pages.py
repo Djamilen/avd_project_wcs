@@ -5,15 +5,15 @@ import re
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("df_sans_vec.csv")
+    return pd.read_csv("df_descriptif.csv")
 
 df_sans_vec = load_data()
 
 def accueil():
     st.header(" 🎬 CINE PROJECT")
-    # st.write(df_sans_vec["originalTitle"].head(20))
-    # st.write(df_sans_vec.columns)
-    # st.write(df_sans_vec["averageRating"])
+    # st.write(df_descriptif["originalTitle"].head(20))
+    # st.write(df_descriptif.columns)
+    # st.write(df_descriptif["averageRating"])
     st.markdown(
         """
         Bienvenue sur <strong>CINE PROJECT</strong>, votre destination pour découvrir et explorer l'univers du cinéma.  
@@ -93,229 +93,11 @@ def accueil():
         )
 
 
-# def recherche():
-#     import streamlit as st
-#     import pandas as pd
-
-#     @st.cache_data
-#     def load_data():
-#         df = pd.read_csv("df_sans_vec.csv")
-#         df = df[df['url_complet'].notna()]
-#         df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
-#         df['startYear'] = df['startYear'].astype(int)
-#         return df
-
-#     df = load_data()
-
-#     st.title("Espace Découverte de Films")
-
-#     if "filtre_actif" not in st.session_state:
-#         st.session_state.filtre_actif = None
-#     if "titre_input" not in st.session_state:
-#         st.session_state.titre_input = ""
-#     if "genre_input" not in st.session_state:
-#         st.session_state.genre_input = ""
-#     if "nom" not in st.session_state:
-#         st.session_state.nom = ""
-#     if "page_num" not in st.session_state:
-#         st.session_state.page_num = 0
-
-#     if st.button("Réinitialiser les filtres"):
-#         st.session_state.filtre_actif = None
-#         st.session_state.titre_input = ""
-#         st.session_state.genre_input = ""
-#         st.session_state.nom = ""
-#         st.session_state.page_num = 0
-#         st.rerun()
-
-#     def activer_filtre(nom):
-#         st.session_state.filtre_actif = nom
-#         st.session_state.page_num = 0
-
-#     st.subheader("🔍 Recherche par titre de film")
-#     col1, col2 = st.columns([4, 1])
-#     with col1:
-#         titre_input = st.text_input("Titre du film", key="titre_input", placeholder="Tapez un titre...")
-#     with col2:
-#         st.button("Afficher", key="btn_titre", on_click=activer_filtre, args=("titre",))
-
-#     st.subheader("🎞️ Recherche par genre")
-#     genres_disponibles = sorted(df['genres'].dropna().unique())
-#     col3, col4 = st.columns([4, 1])
-#     with col3:
-#         genre_input = st.selectbox("Choisir un genre", [""] + genres_disponibles, key="genre_input")
-#     with col4:
-#         st.button("Afficher", key="btn_genre", on_click=activer_filtre, args=("genre",))
-
-#     st.subheader("🎭 Recherche par nom")
-#     col5, col6 = st.columns([4, 1])
-#     with col5:
-#         nom_recherche = st.text_input("Nom de l'acteur, actrice ou réalisateur", key="nom", placeholder="Tapez un nom...")
-#     with col6:
-#         st.button("Afficher", key="btn_nom", on_click=activer_filtre, args=("nom",))
-
-#     if st.session_state.filtre_actif == "titre" and titre_input:
-#         df_filtre = df[df['originalTitle'].str.lower().str.contains(titre_input.lower(), na=False)]
-#     elif st.session_state.filtre_actif == "genre" and genre_input:
-#         df_filtre = df[df['genres'] == genre_input]
-#     elif st.session_state.filtre_actif == "nom" and nom_recherche:
-#         df_filtre = df[df['noms'].str.lower().str.contains(nom_recherche.lower(), na=False)]
-#     else:
-#         df_filtre = pd.DataFrame()
-
-#     df_filtre = df_filtre.sort_values(by="startYear", ascending=False)
-#     df_filtre = df_filtre[df_filtre['url_complet'].notna() & (df_filtre['url_complet'].str.strip() != "")]
-
-#     page_size = 9  # 3 par ligne, 3 lignes
-#     total_results = len(df_filtre)
-#     total_pages = (total_results + page_size - 1) // page_size
-#     page_num = st.session_state.page_num
-
-#     start = page_num * page_size
-#     end = start + page_size
-#     page_data = df_filtre.iloc[start:end]
-
-#     if not page_data.empty:
-#         rows = [page_data[i:i+3] for i in range(0, len(page_data), 3)]
-#         for row_chunk in rows:
-#             cols = st.columns(3)
-#             for idx, (_, row) in enumerate(row_chunk.iterrows()):
-#                 with cols[idx]:
-#                     st.image(row['url_complet'], width=300)
-#                     st.markdown(f"**{row['originalTitle']}**")
-#                     st.write(f"📅 Année : {row.get('startYear', 'Inconnu')}")
-#                     st.write(f"🎞️ Genres : {row.get('genres', 'Non spécifié')}")
-
-#         st.markdown(f"**Page {page_num + 1} sur {total_pages}**")
-#         col_prev, col_next = st.columns(2)
-#         with col_prev:
-#             if page_num > 0 and st.button("⬅️ Page précédente"):
-#                 st.session_state.page_num -= 1
-#                 st.rerun()
-#         with col_next:
-#             if page_num < total_pages - 1 and st.button("➡️ Page suivante"):
-#                 st.session_state.page_num += 1
-#                 st.rerun()
-#     else:
-#         if st.session_state.filtre_actif:
-#             st.warning("Aucun résultat trouvé pour ce filtre.")
-
-# def recherche():
-#     import streamlit as st
-#     import pandas as pd
-
-#     # Chargement des données
-#     @st.cache_data
-#     def load_data():
-#         df = pd.read_csv("df_sans_vec.csv")
-#         df = df[df['url_complet'].notna()]
-#         df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
-#         df['startYear'] = df['startYear'].astype(int)
-#         df = df.sort_values(by="startYear", ascending=False)
-#         return df
-
-#     df = load_data()
-#     st.title("Espace Découverte de Films")
-
-#     # Initialisation
-#     for key, default in [("filtre_actif", None), ("titre_input", ""), ("genre_input", ""), ("nom", ""), ("page_num", 0)]:
-#         if key not in st.session_state:
-#             st.session_state[key] = default
-
-#     # Réinitialisation
-#     if st.button("Réinitialiser les filtres", key="reset_btn"):
-#         for key in ["filtre_actif", "titre_input", "genre_input", "nom", "page_num"]:
-#             if key in st.session_state:
-#                 del st.session_state[key]
-#         st.rerun()
-
-#     def activer_filtre(nom):
-#         st.session_state.filtre_actif = nom
-#         st.session_state.page_num = 0
-
-#     # 🔍 Recherche par titre
-#     st.subheader("🔍 Recherche par titre de film")
-#     col1, col2 = st.columns([4, 1])
-#     with col1:
-#         titre_input = st.text_input("Titre du film", key="titre_input", placeholder="Tapez un titre...")
-#     with col2:
-#         st.button("Afficher", key="btn_titre", on_click=activer_filtre, args=("titre",))
-
-#     # 🎞️ Recherche par genre
-#     st.subheader("🎞️ Recherche par genre")
-#     genres_dispo = sorted(df['genres'].dropna().unique())
-#     col3, col4 = st.columns([4, 1])
-#     with col3:
-#         genre_input = st.selectbox("Choisir un genre", [""] + genres_dispo, key="genre_input")
-#     with col4:
-#         st.button("Afficher", key="btn_genre", on_click=activer_filtre, args=("genre",))
-
-#     # 🎭 Recherche par nom
-#     st.subheader("🎭 Recherche par nom")
-#     col5, col6 = st.columns([4, 1])
-#     with col5:
-#         nom_input = st.text_input("Nom de l'acteur, actrice ou réalisateur", key="nom", placeholder="Tapez un nom...")
-#     with col6:
-#         st.button("Afficher", key="btn_nom", on_click=activer_filtre, args=("nom",))
-
-#     # Appliquer les filtres
-#     if st.session_state.filtre_actif == "titre" and titre_input:
-#         df_filtre = df[df['originalTitle'].str.lower().str.contains(titre_input.lower(), na=False)]
-#     elif st.session_state.filtre_actif == "genre" and genre_input:
-#         df_filtre = df[df['genres'] == genre_input]
-#     elif st.session_state.filtre_actif == "nom" and nom_input:
-#         df_filtre = df[df['noms'].str.lower().str.contains(nom_input.lower(), na=False)]
-#     else:
-#         df_filtre = pd.DataFrame()
-
-#     # Filtrage des images valides
-#     df_filtre = df_filtre[df_filtre['url_complet'].notna() & (df_filtre['url_complet'].str.strip() != "")]
-#     df_filtre = df_filtre.sort_values(by="startYear", ascending=False)
-
-#     # Pagination
-#     page_size = 9
-#     total_results = len(df_filtre)
-#     total_pages = (total_results + page_size - 1) // page_size
-#     page_num = st.session_state.page_num
-
-#     start = page_num * page_size
-#     end = start + page_size
-#     page_data = df_filtre.iloc[start:end]
-
-#     # Résultats
-#     if not page_data.empty:
-#         rows = [page_data.iloc[i:i + 3] for i in range(0, len(page_data), 3)]
-#         for ligne in rows:
-#             cols = st.columns(3)
-#             for idx, (_, row) in enumerate(ligne.iterrows()):
-#                 with cols[idx]:
-#                     st.image(row['url_complet'], width=300)
-#                     st.markdown(f"**{row['originalTitle']}**")
-#                     st.write(f"Année : {row['startYear']}")
-#                     st.write(f"Genres : {row['genres']}")
-
-#         # Navigation
-#         st.write(f"Page {page_num + 1} sur {total_pages}")
-#         col_prev, col_next = st.columns([1, 1])
-#         with col_prev:
-#             if page_num > 0 and st.button("⬅️ Page précédente"):
-#                 st.session_state.page_num -= 1
-#                 st.rerun()
-#         with col_next:
-#             if page_num < total_pages - 1 and st.button("➡️ Page suivante"):
-#                 st.session_state.page_num += 1
-#                 st.rerun()
-#     else:
-#         if st.session_state.filtre_actif:
-#             st.warning("Aucun résultat trouvé.")
-
-
-
 def recherche():
     # Chargement des données
     @st.cache_data
     def load_data():
-        df = pd.read_csv("df_sans_vec.csv")
+        df = pd.read_csv("df_descriptif.csv")
         df = df[df['url_complet'].notna()]
         df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
         df['startYear'] = df['startYear'].astype(int)
@@ -324,31 +106,12 @@ def recherche():
 
 
 
-    # @st.cache_data
-    # def load_data():
-    #     df = pd.read_csv("df_sans_vec.csv")
-    #     df.columns = df.columns.str.strip()
-    #     df = df[df['url_complet'].notna()]
-    #     df = df[df['url_complet'].str.strip() != ""]
-    #     df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
-    #     df['startYear'] = df['startYear'].astype(int)
-    #     df = df.sort_values(by="startYear", ascending=False)
-    #     return df
         
     df = load_data()
     st.header(" 🎬 CINE PROJECT")
     st.title("🔎 Recherche de films")
 
-    if "filtre_actif" not in st.session_state:
-        st.session_state.filtre_actif = None
-    if "titre_input" not in st.session_state:
-        st.session_state.titre_input = ""
-    if "genre_input" not in st.session_state:
-        st.session_state.genre_input = ""
-    if "nom" not in st.session_state:
-        st.session_state.nom = ""
-    if "page_num" not in st.session_state:
-        st.session_state.page_num = 0
+
 
     # Bouton de réinitialisation
     if st.button("Réinitialiser les filtres"):
@@ -357,7 +120,7 @@ def recherche():
         st.session_state.genre_input = ""
         st.session_state.nom = ""
         st.session_state.page_num = 0
-        st.experimental_rerun()
+        st.rerun()
 
     # Fonctions pour activer les filtres
     def activer_filtre(nom):
@@ -428,11 +191,11 @@ def recherche():
         with col_prev:
             if page_num > 0 and st.button("⬅️ Page précédente"):
                 st.session_state.page_num -= 1
-                st.experimental_rerun()
+                st.rerun()
         with col_next:
             if page_num < total_pages - 1 and st.button("➡️ Page suivante"):
                 st.session_state.page_num += 1
-                st.experimental_rerun()
+                st.rerun()
     else:
         if st.session_state.filtre_actif:
             st.warning("Aucun résultat trouvé pour ce filtre.")
@@ -443,7 +206,7 @@ def espace_découverte():
     # Chargement des données
     @st.cache_data
     def load_data():
-        df = pd.read_csv("df_sans_vec.csv")
+        df = pd.read_csv("df_descriptif.csv")
         df = df[df['url_complet'].notna()]
         df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
         df['startYear'] = df['startYear'].astype(int)
@@ -542,3 +305,23 @@ def espace_découverte():
                 st.markdown(f"**{row['originalTitle']}**")
                 st.write(f"{row['noms']}")
                 st.write(f"Année : {row['startYear']}")
+
+def session_states():
+    if "filtre_actif" not in st.session_state:
+        st.session_state.filtre_actif = None
+    if "titre_input" not in st.session_state:
+        st.session_state.titre_input = ""
+    if "genre_input" not in st.session_state:
+        st.session_state.genre_input = ""
+    if "nom" not in st.session_state:
+        st.session_state.nom = ""
+    if "page_num" not in st.session_state:
+        st.session_state.page_num = 0
+        
+def reco():
+    if st.session_state["film_selectionne"] not in st.session_state or st.session_state["film_selectionne"] is None:
+        st.write("Rien a voir")
+    else:
+        st.write(f"Film sélectionné : {st.session_state["film_selectionne"]}")
+
+        
