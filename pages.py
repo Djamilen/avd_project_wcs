@@ -98,6 +98,7 @@ def recherche():
     @st.cache_data
     def load_data():
         df = pd.read_csv("df_descriptif.csv")
+        df = df.set_index("Unnamed: 0.1")
         df = df[df['url_complet'].notna()]
         df = df[df['startYear'].apply(lambda x: str(x).isdigit())]
         df['startYear'] = df['startYear'].astype(int)
@@ -109,6 +110,7 @@ def recherche():
         
     df = load_data()
     st.header(" 🎬 CINE PROJECT")
+    st.dataframe(df.iloc[:5])
     st.title("🔎 Recherche de films")
 
 
@@ -184,9 +186,12 @@ def recherche():
                     st.markdown(f"**{row['originalTitle']}**")
                     st.write(f"Année : {row['startYear']}")
                     st.write(f"Genres : {row['genres']}")
-                    selected = st.button("Accéder à la reco", key=row["originalTitle"])
+                    print(row.index)
+                    st.write(row.index)
+                    st.write(row)
+                    selected = st.button("Accéder à la reco", key=row.index)
                     if selected:
-                        st.session_state["film_selectionne"] = row["originalTitle"]
+                        st.session_state["film_selectionne"] = row.index
                         st.session_state["page"] = "Reco"
                         st.rerun()
         # Navigation

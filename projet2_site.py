@@ -1,4 +1,10 @@
 import streamlit as st
+st.set_page_config(
+    layout="wide",
+    page_title="CINE PROJECT",
+    page_icon="🎬",
+    initial_sidebar_state="expanded"
+)
 from streamlit_option_menu import option_menu
 import pandas as pd
 import streamlit.components.v1 as components
@@ -6,14 +12,11 @@ import plotly.express as px
 import re
 from pages import accueil, recherche, espace_découverte, reco, session_states
 
+
+
 session_states()
 
-st.set_page_config(
-    layout="wide",
-    page_title="CINE PROJECT",
-    page_icon="🎬",
-    initial_sidebar_state="expanded"
-)
+
 
 # Lire le fichier CSV (placé dans le même dossier que ce script)
 @st.cache_data 
@@ -45,5 +48,6 @@ elif selection == "Recherche":
 
 elif selection == "Espace découverte":
     espace_découverte()
+
 elif selection == "Reco":
     reco()
