@@ -18,11 +18,15 @@ session_states()
 # Lire le fichier CSV (placé dans le même dossier que ce script)
 @st.cache_data 
 def load_data():
-    return pd.read_csv("df_final.csv")
+    df = pd.read_csv("csv/df_final.csv")
+    df = df[df['url_complet'].notna() & df['startYear'].astype(str).str.isdigit()]
+    df['startYear'] = df['startYear'].astype(int)
+    df = df.set_index(df['primaryTitle'] + "_" + df['startYear'].astype(str))
+    return df.sort_values("startYear", ascending=False)
 
 # Charger les données dans session_state 
-if "df_final" not in st.session_state:
-    st.session_state["df_final"] = load_data()
+if "csv/df_final" not in st.session_state:
+    st.session_state["csv/df_final"] = load_data()
 
 # Importer les pages SEULEMENT APRÈS le set_page_config
 

@@ -66,29 +66,28 @@ def accueil():
         st.plotly_chart(fig2, use_container_width=True)
 
 def recherche():
-    df = st.session_state["csv/df_final"]
-    session_states()
+    df = st.session_state["df_final"]
+    if st.session_state.reset:
+        st.session_state.query = ""
+        st.session_state.reset = False
+        st.rerun()
 
-    # Saisie de recherche
-    query = st.text_input("Tape un titre ou un nom", value=st.session_state.query, placeholder="🔎 Réveille toi, il faut effectuer un recherche ;) ...")
+    query = st.text_input("Recherche", value=st.session_state.query, placeholder="🔎 Tape un nom de film ou d'acteur pour commencer ta recherche.")
 
-    # Boutons Entrer / Réinitialiser
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        if st.button("Entrer"):
-            st.session_state.query = query
-            st.session_state.page_num = 0
-    with col2:
-        if st.button("Réinitialiser"):
-            st.session_state.query = ""
-            st.session_state.page_num = 0
-            st.rerun()
 
-    # Recherche si une requête est enregistrée
+    if query != st.session_state.query:
+        st.session_state.query = query
+        st.session_state.page_num = 0
+
+    if st.button("Réinitialiser"):
+        st.session_state.reset = True
+        st.session_state.page_num = 0
+        st.rerun()
+
     if st.session_state.query:
         filtres = df[
             df['originalTitle'].str.lower().str.contains(st.session_state.query.lower(), na=False) |
-            df['primaryName'].str.lower().str.contains(st.session_state.query.lower(), na=False)
+            df['noms'].str.lower().str.contains(st.session_state.query.lower(), na=False)
         ]
 
         page = st.session_state.page_num
@@ -108,23 +107,22 @@ def recherche():
         total_pages = (len(filtres) - 1) // 9 + 1
         st.markdown(f"Page {page+1} / {total_pages}")
 
-        col_g, col_d = st.columns([1, 1])
-        with col_g:
+        col1, col2 = st.columns([1, 1])
+        with col1:
             if page > 0 and st.button("⬅️ Page précédente"):
                 st.session_state.page_num -= 1
                 st.rerun()
-        with col_d:
+        with col2:
             if end < len(filtres) and st.button("➡️ Page suivante"):
                 st.session_state.page_num += 1
                 st.rerun()
-
     
 
 def espace_decouverte():
     pass
 
 def reco():
-    df = st.session_state["csv/df_final"]
+    df = st.session_state["df_final"]
     session_states()
 
     if st.session_state.film_selectionne is None:
@@ -135,7 +133,6 @@ def reco():
 
     
     col1, col2 = st.columns([1, 2])
-    
     with col1:
         
         st.image(film['url_complet'], width=300)
@@ -158,6 +155,7 @@ def reco():
         st.subheader("Résumé")
         st.write(film.get("overview", "Aucun résumé disponible."))
 
+    
 
     
 
