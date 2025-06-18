@@ -1,16 +1,8 @@
-import requests
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from utils import is_valid_image
 from yt_dlp import YoutubeDL
-
-def is_valid_image(url):
-    try:
-        response = requests.head(url, timeout=2)
-        return response.status_code == 200 and 'image' in response.headers.get('Content-Type', '')
-    except:
-        return False
-    
 
 def session_states():
     st.session_state.setdefault("query", "")
@@ -19,7 +11,7 @@ def session_states():
     st.session_state.setdefault("film_selectionne", None)
     st.session_state.setdefault("page", "Accueil")
     st.session_state.setdefault("reset", False)
-
+   
 
 def scrap_video(movie_title):
     ydl_opts = {
@@ -34,3 +26,6 @@ def scrap_video(movie_title):
             return result["entries"][0]["url"]
         except:
             return None
+
+def espace_decouverte():
+    pass

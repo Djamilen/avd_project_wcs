@@ -10,7 +10,12 @@ import pandas as pd
 import streamlit.components.v1 as components
 import plotly.express as px
 import re
-from page_n import accueil, session_states, recherche, espace_decouverte, reco
+from page.page_accueil import accueil
+from page.page_recherche import recherche
+from page.page_espace_decouverte import espace_decouverte
+from page.page_reco import reco
+from utils import session_states, scrap_video
+#from page_n import accueil, session_states, recherche, espace_decouverte, reco
 
 
 session_states()
