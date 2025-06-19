@@ -10,7 +10,12 @@ import pandas as pd
 import streamlit.components.v1 as components
 import plotly.express as px
 import re
-from page_n import accueil, session_states, recherche, espace_decouverte, reco
+from page.page_accueil import accueil
+from page.page_recherche import recherche
+from page.page_espace_decouverte import espace_decouverte
+from page.page_reco import reco
+from utils import session_states, scrap_video
+#from page_n import accueil, session_states, recherche, espace_decouverte, reco
 
 
 session_states()
@@ -21,7 +26,7 @@ def load_data():
     df = pd.read_csv("csv/df_final_translated.csv")
     df = df[df['url_complet'].notna() & df['startYear'].astype(str).str.isdigit()]
     df['startYear'] = df['startYear'].astype(int)
-    df = df.set_index(df['primaryTitle'] + "_" + df['startYear'].astype(str))
+    df = df.set_index("Unnamed: 0.1")
     return df.sort_values("startYear", ascending=False)
 
 @st.cache_data
