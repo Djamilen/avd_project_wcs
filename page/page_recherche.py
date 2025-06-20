@@ -43,7 +43,7 @@ def recherche():
     # Barre de recherche
     query = st.selectbox(
         "🔎 Tape un film ou un nom",
-        options=[""] + suggestions[:1000],
+        options=[""] + suggestions,
         index=0,
         placeholder="🔎 Tape un nom de film ou d'acteur pour commencer ta recherche."
     )
