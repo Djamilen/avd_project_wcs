@@ -40,11 +40,10 @@ def recherche():
         except:
             pass
     suggestions = sorted(set(titres) | personnes)
-    st.write(suggestions)
     # Barre de recherche
     query = st.selectbox(
         "🔎 Tape un film ou un nom",
-        options=[""] + suggestions,
+        options=[""] + suggestions[:1000],
         index=0,
         placeholder="🔎 Tape un nom de film ou d'acteur pour commencer ta recherche."
     )
