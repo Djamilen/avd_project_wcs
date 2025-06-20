@@ -27,7 +27,7 @@ def load_data():
     df = pd.read_csv("csv/df_final_translated.csv")
     df = df[df['url_complet'].notna() & df['startYear'].astype(str).str.isdigit()]
     df['startYear'] = df['startYear'].astype(int)
-    df = df.set_index("Unnamed: 0.1")
+    df = df.set_index("index")
     return df.sort_values("startYear", ascending=False)
 
 @st.cache_data

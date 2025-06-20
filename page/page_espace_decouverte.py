@@ -8,8 +8,8 @@ def espace_decouverte():
     df = st.session_state["df_final_translated"]
 
     # 🧼 Nettoyage des genres
-    df["genres"] = df["genres"].fillna("")
-    df["genres"] = df["genres"].str.replace("{", "", regex=False)\
+    df["genres_list"] = df["genres_list"].fillna("")
+    df["genres_list"] = df["genres_list"].str.replace("{", "", regex=False)\
                                 .str.replace("}", "", regex=False)\
                                 .str.replace("'", "", regex=False)\
                                 .str.split(",")
@@ -38,8 +38,8 @@ def espace_decouverte():
     #     df = df[df["production_countries"].apply(lambda countries: any(p.strip() in countries for p in selected_countries))]
 
     # 🔍 Extraire tous les genres uniques
-    df_exploded = df.explode("genres")
-    df_exploded["genre_unique"] = df_exploded["genres"].str.strip()
+    df_exploded = df.explode("genres_list")
+    df_exploded["genre_unique"] = df_exploded["genres_list"].str.strip()
     all_genres = sorted(df_exploded["genre_unique"].dropna().unique())
 
     # 🎯 Genres principaux à afficher en priorité
@@ -70,7 +70,7 @@ def espace_decouverte():
 
     # 🔍 Filtrage des films selon les genres sélectionnés
     if selected_genres:
-        df_filtered = df[df["genres"].apply(lambda genres: all(g in genres for g in selected_genres))]
+        df_filtered = df[df["genres_list"].apply(lambda genres: all(g in genres for g in selected_genres))]
 
         # 🔢 Tri par note moyenne sans reset_index (on garde les vrais ID de film)
         filtres = df_filtered.sort_values(by="averageRating", ascending=False)

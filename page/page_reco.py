@@ -59,8 +59,8 @@ def reco():
         # 🎬 Réalisateur avec hiérarchie : d'abord noms/category, sinon primaryName
         try:
             noms = eval(film.get("noms", "[]"))
-            roles = eval(film.get("category", "[]"))
-            realisateurs_identifies = [nom for nom, role in zip(noms, roles) if role == "director"]
+            roles = eval(film.get("jobs", "[]"))
+            realisateurs_identifies = [nom for nom, role in zip(noms, roles) if (role == "director" or role == "real")]
 
             if realisateurs_identifies:
                 st.write(f"🎬 Réalisateur : {', '.join(realisateurs_identifies)}")
@@ -89,7 +89,7 @@ def reco():
             st.write("🎭 Acteurs : Non disponible")
 
         # 📚 Genres
-        st.write(f"📚 Genre(s) : {', '.join(eval(film.get('genres', '[]')))}")
+        st.write(f"📚 Genre(s) : {', '.join(eval(film.get('genres_list', '[]')))}")
         # ⏱️ Durée
         st.write(f"⏱️ Durée : {film.get('runtimeMinutes', 'Non renseignée')} min")
 
