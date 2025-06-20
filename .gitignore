@@ -1,3 +1,4 @@
 *.csv
-!df_fin.csv
+!df_recio_film.csv
+!df_final_translated.csv
 __pycache__
