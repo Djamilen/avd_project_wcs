@@ -5,6 +5,7 @@ st.set_page_config(
     page_icon="🎬",
     initial_sidebar_state="expanded"
 )
+
 from streamlit_option_menu import option_menu
 import pandas as pd
 import streamlit.components.v1 as components

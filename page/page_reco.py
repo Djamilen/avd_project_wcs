@@ -4,6 +4,7 @@ import plotly.express as px
 from utils import is_valid_image
 from yt_dlp import YoutubeDL
 
+
 def session_states():
     st.session_state.setdefault("query", "")
     st.session_state.setdefault("last_query", "")
@@ -39,7 +40,12 @@ def reco():
 
     col1, col2 = st.columns([1, 2])
     with col1:
-        st.image(film['url_complet'], width=300)
+        image_url = film['url_complet']
+        if is_valid_image(image_url):
+            st.image(image_url, width=300)
+        else:
+            st.image("image/Pas_d_image.png", width=300)
+
         video_url = scrap_video(film['originalTitle'])
         if video_url:
             st.video(video_url)
@@ -99,7 +105,7 @@ def reco():
 
     raw_recos_str = reco_df.loc[film.name]["recos"]
     rec_titles = eval(raw_recos_str)[:10]
-    st.write(rec_titles)
+    #st.write(rec_titles)
 
     reco_films = df.loc[rec_titles]
 
@@ -117,6 +123,8 @@ def reco():
             st.write(", ".join(eval(rec_film.get('genres', '[]'))))
             if st.button("Accéder", key=f"reco_{start+i}"):
                 st.session_state["film_selectionne"] = rec_film.name
+                print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+                print(st.session_state["film_selectionne"] )
                 st.session_state.reco_page = 0
                 st.rerun()
 

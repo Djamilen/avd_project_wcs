@@ -52,7 +52,7 @@ def recherche():
     # Boutons
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Entrer"):
+        if st.button("Rechercher"):
             st.session_state.query = query
             st.session_state.page_num = 0
             st.rerun()

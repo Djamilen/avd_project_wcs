@@ -28,16 +28,22 @@ def scrap_video(movie_title):
             return None
         
 def accueil():
-    st.title("🎬 CINE PROJECT")
+
+    st.image("image/Vlad_3.png", width=200)
+
+    # Sous-titre bleu, un peu plus petit (niveau H2)
+    st.markdown("<h2 style='font-size:50px; color:#1f6feb; border-radius:10px;'>Notre ADN</h2>", unsafe_allow_html=True)  # H2 = deuxième niveau
+
     st.markdown(
         """
-        Bienvenue sur CINE PROJECT, votre destination pour découvrir et explorer l'univers du cinéma.  
-        Notre ADN repose sur la passion du 7ème art, le partage d'idées et l'inspiration.  
-        Des recommandations qui vous correspondent grâce à une analyse ciblée du marché du cinéma français.  
-        Des données mises à jour en temps réel en fonction des dernières sorties et avis du public,  
-        exclusivement orientées selon les attentes des spectateurs français.
-        """
-    )
+        Bienvenue sur notre site, vous êtes sur la bonne destination qui vous permettra de découvrir et explorer tout le meilleur du cinéma.
+
+        Notre ADN repose sur la passion du 7ème art, le partage d'idées et l'inspiration.
+
+        
+        Des recommandations qui vous correspondent grâce à une analyse ciblée du marché du cinéma français.
+        Des données mises à jour en temps réel en fonction des dernières sorties et avis du public.
+        Des sélections de films exclusivement orientées selon les attentes des spectateurs français.""")
 
     df1 = pd.DataFrame({
         'Année': list(range(2015, 2025)),
